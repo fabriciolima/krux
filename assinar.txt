@@ -1,0 +1,1 @@
+./krux sign build/firmware.bin privkey.pem

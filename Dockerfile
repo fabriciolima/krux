@@ -28,7 +28,8 @@
 ############
 FROM gcc:9.5.0-bullseye AS build-base
 
-RUN apt-get update -y && \
+RUN sed -i 's/http:/https:/g' /etc/apt/sources.list && \
+    apt-get update -y && \
     apt-get install --no-install-recommends -y -q \
         wget \
         tar \

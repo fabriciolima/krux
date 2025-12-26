@@ -3,7 +3,7 @@
 *.o
 *.a
 *.elf
-*.bin
+#*.bin
 *.map
 *.hex
 *.kff
@@ -86,3 +86,4 @@ krux-*/ktool*
 
 # IDE files
 .vscode
+/.krux/*

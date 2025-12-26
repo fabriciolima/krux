@@ -125,7 +125,12 @@ def snapshot():
                 # Otherwise keep the camera image if it's to create entropy
                 sequence_executor.camera_image = None
     else:
-        _, frame = capturer.read()
+        ret, frame = capturer.read()
+        if not ret or frame is None:
+            # Fallback if camera not working
+            import numpy as np
+            frame = np.zeros((240, 320, 3), dtype=np.uint8)
+            
         rgb_frame = cvtColor(frame, COLOR_BGR2RGB)
         lab_frame = cvtColor(frame, COLOR_BGR2LAB)
         img = Image.fromarray(rgb_frame)
@@ -136,6 +141,7 @@ def snapshot():
         m.get_statistics.return_value = MockStatistics(lab_frame)
         m.width.return_value = frame.shape[1]
         m.height.return_value = frame.shape[0]
+        m.get_pixel.side_effect = lambda x, y: tuple(rgb_frame[int(y), int(x)]) if (0 <= int(x) < frame.shape[1] and 0 <= int(y) < frame.shape[0]) else (0,0,0)
         m.lens_corr.return_value = m
     return m
 
@@ -145,4 +151,16 @@ if "sensor" not in sys.modules:
         reset=reset,
         run=run,
         snapshot=snapshot,
+        get_id=lambda: 0,
+        set_pixformat=mock.MagicMock(),
+        set_framesize=mock.MagicMock(),
+        set_windowing=mock.MagicMock(),
+        skip_frames=mock.MagicMock(),
+        set_hmirror=mock.MagicMock(),
+        set_vflip=mock.MagicMock(),
+        GRAYSCALE=2,
+        RGB565=0,
+        CIF=5,
+        QVGA=6,
+        VGA=10,
     )

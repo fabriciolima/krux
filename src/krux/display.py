@@ -232,23 +232,25 @@ class Display:
 
     def to_landscape(self):
         """Changes the rotation of the display to landscape"""
-        lcd.rotation(
-            (LANDSCAPE + 2) % 4
-            if hasattr(Settings().hardware, "display")
-            and getattr(Settings().hardware.display, "flipped_orientation", False)
-            else LANDSCAPE
-        )
-        self.portrait = False
+        if self.portrait:
+            lcd.rotation(
+                (LANDSCAPE + 2) % 4
+                if hasattr(Settings().hardware, "display")
+                and getattr(Settings().hardware.display, "flipped_orientation", False)
+                else LANDSCAPE
+            )
+            self.portrait = False
 
     def to_portrait(self):
         """Changes the rotation of the display to portrait"""
-        lcd.rotation(
-            (PORTRAIT + 2) % 4
-            if hasattr(Settings().hardware, "display")
-            and getattr(Settings().hardware.display, "flipped_orientation", False)
-            else PORTRAIT
-        )
-        self.portrait = True
+        if not self.portrait:
+            lcd.rotation(
+                (PORTRAIT + 2) % 4
+                if hasattr(Settings().hardware, "display")
+                and getattr(Settings().hardware.display, "flipped_orientation", False)
+                else PORTRAIT
+            )
+            self.portrait = True
 
     def _usable_pixels_in_line(self):
         """Returns qtd of usable pixels in a line"""

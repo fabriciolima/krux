@@ -475,6 +475,7 @@ class SecuritySettings(SettingsNamespace):
     auto_shutdown = NumberSetting(int, "auto_shutdown", 10, [0, 60])
     hide_mnemonic = CategorySetting("hide_mnemonic", False, [False, True])
     boot_flash_hash = CategorySetting("boot_flash_hash", False, [False, True])
+    biometric_unlock = CategorySetting("biometric_unlock", False, [False, True])
 
     def label(self, attr):
         """Returns a label for UI when given a setting name or namespace"""
@@ -482,6 +483,7 @@ class SecuritySettings(SettingsNamespace):
             "auto_shutdown": t("Shutdown Time"),
             "hide_mnemonic": t("Hide Mnemonics"),
             "boot_flash_hash": t("TC Flash Hash at Boot"),
+            "biometric_unlock": t("Biometric Unlock"),
         }[attr]
 
 
