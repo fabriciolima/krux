@@ -58,13 +58,10 @@ RUN apt-get update -y && \
         python3-pip \
         python3-setuptools
 
-RUN mkdir -p /opt && \
-    git clone --depth 1 --recurse-submodules --shallow-submodules --branch v8.2.0-20190409 https://github.com/kendryte/kendryte-gnu-toolchain
-
-RUN cd kendryte-gnu-toolchain && \
-    export PATH=$PATH:/opt/kendryte-toolchain/bin && \
-    ./configure --prefix=/opt/kendryte-toolchain --with-cmodel=medany --with-arch=rv64imafc --with-abi=lp64f --enable-threads=posix --enable-libatomic && \
-    make -j8
+RUN cd /opt && \
+    wget -q https://github.com/kendryte/kendryte-gnu-toolchain/releases/download/v8.2.0-20190409/kendryte-toolchain-ubuntu-amd64-8.2.0-20190409.tar.xz && \
+    tar -xf kendryte-toolchain-ubuntu-amd64-8.2.0-20190409.tar.xz && \
+    rm kendryte-toolchain-ubuntu-amd64-8.2.0-20190409.tar.xz
 
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.0/cmake-3.21.0.tar.gz && \
     echo "4a42d56449a51f4d3809ab4d3b61fd4a96a469e56266e896ce1009b5768bd2ab  cmake-3.21.0.tar.gz" | sha256sum -c && \
